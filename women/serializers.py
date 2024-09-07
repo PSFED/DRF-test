@@ -9,3 +9,5 @@ class WomenSerializer(serializers.ModelSerializer):
     class Meta:
         model = Women
         fields = "__all__"
+
+    cat = serializers.StringRelatedField()

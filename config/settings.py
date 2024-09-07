@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "women.apps.WomenConfig",
     "rest_framework",
     "rest_framework.authtoken",
+    "django_filters",
     "djoser",
 ]
 

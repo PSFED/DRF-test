@@ -5,7 +5,10 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 
+from women.filters import WomenFilter
 from women.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from .serializers import WomenSerializer
 from .models import Women, Category
@@ -22,6 +25,10 @@ class WomenAPIList(generics.ListCreateAPIView):
     serializer_class = WomenSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
     pagination_class = WomenAPIListPagination
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_class = WomenFilter
+    search_fields = ["title", "content"]
+    ordering_fields = ["id"]
 
 
 class WomenAPIUpdate(generics.RetrieveUpdateAPIView):
