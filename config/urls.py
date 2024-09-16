@@ -29,11 +29,21 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/drf-auth/", include("rest_framework.urls")),
     path("api/v1/women/", WomenAPIList.as_view()),
+    path("api/v1/carts/", CartViewSet.as_view({"post": "create"})),
+    path(
+        "api/v1/carts/<str:pk>/",
+        CartViewSet.as_view(
+            {
+                "get": "retrieve",
+                "delete": "destroy",
+            }
+        ),
+    ),
     path("api/v1/women/<int:pk>/", WomenAPIUpdate.as_view()),
     path("api/v1/womendelete/<int:pk>/", WomenAPIDestroy.as_view()),
-    path("api/v1/auth/", include("djoser.urls")),
-    re_path(r"^auth/", include("djoser.urls.authtoken")),
-    path("api/v1/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/token/v1/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("api/token/v1/verify/", TokenVerifyView.as_view(), name="token_verify"),
+    # path("api/v1/auth/", include("djoser.urls")),
+    # re_path(r"^auth/", include("djoser.urls.authtoken")),
+    # path("api/v1/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    # path("api/token/v1/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    # path("api/token/v1/verify/", TokenVerifyView.as_view(), name="token_verify"),
 ]

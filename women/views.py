@@ -5,13 +5,18 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.mixins import (
+    CreateModelMixin,
+    RetrieveModelMixin,
+    DestroyModelMixin,
+)
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 
 from women.filters import WomenFilter
 from women.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
-from .serializers import WomenSerializer
-from .models import Women, Category
+from .serializers import CartSerializer, WomenSerializer
+from .models import Cart, Women, Category
 
 
 class WomenAPIListPagination(PageNumberPagination):
@@ -23,7 +28,7 @@ class WomenAPIListPagination(PageNumberPagination):
 class WomenAPIList(generics.ListCreateAPIView):
     queryset = Women.objects.all()
     serializer_class = WomenSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    # permission_classes = (IsAuthenticatedOrReadOnly,)
     pagination_class = WomenAPIListPagination
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = WomenFilter
@@ -34,14 +39,21 @@ class WomenAPIList(generics.ListCreateAPIView):
 class WomenAPIUpdate(generics.RetrieveUpdateAPIView):
     queryset = Women.objects.all()
     serializer_class = WomenSerializer
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     # authentication_classes = (TokenAuthentication,)
 
 
 class WomenAPIDestroy(generics.RetrieveDestroyAPIView):
     queryset = Women.objects.all()
     serializer_class = WomenSerializer
-    permission_classes = (IsAdminOrReadOnly,)
+    # permission_classes = (IsAdminOrReadOnly,)
+
+
+class CartViewSet(
+    DestroyModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.GenericViewSet
+):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
 
 
 # class WomenViewSet(viewsets.ModelViewSet):
